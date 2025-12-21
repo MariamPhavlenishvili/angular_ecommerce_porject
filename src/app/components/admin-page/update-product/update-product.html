@@ -1,0 +1,214 @@
+@if (isLoading) {
+<div class="admin-page-container">
+  <div class="loading-state">
+    <div class="loading-spinner"></div>
+    <p>Loading product...</p>
+  </div>
+</div>
+} @else {
+<div class="admin-page-container">
+  <div class="admin-header">
+    <h1 class="admin-title">Update Product</h1>
+    <p class="admin-subtitle">Edit product information</p>
+  </div>
+
+  <div class="form-container">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="product-form">
+      @if (successMessage) {
+      <div class="message success-message">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        {{ successMessage }}
+      </div>
+      } @if (errorMessage) {
+      <div class="message error-message">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        {{ errorMessage }}
+      </div>
+      }
+
+      <div class="form-section">
+        <h2 class="section-title">Product Information</h2>
+
+        <div class="form-group">
+          <label for="title" class="form-label"> Title <span class="required">*</span> </label>
+          <input
+            type="text"
+            id="title"
+            formControlName="title"
+            class="form-input"
+            [class.error]="submitted && f['title'].invalid"
+            placeholder="Enter product title"
+          />
+          @if (submitted && f['title'].invalid) {
+          <span class="error-message">
+            @if (f['title'].errors?.['required']) { Title is required } @else if
+            (f['title'].errors?.['minlength']) { Title must be at least 3 characters }
+          </span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="price" class="form-label"> Price <span class="required">*</span> </label>
+          <input
+            type="number"
+            id="price"
+            formControlName="price"
+            class="form-input"
+            [class.error]="submitted && f['price'].invalid"
+            placeholder="0.00"
+            step="0.01"
+            min="0.01"
+          />
+          @if (submitted && f['price'].invalid) {
+          <span class="error-message">
+            @if (f['price'].errors?.['required']) { Price is required } @else if
+            (f['price'].errors?.['min']) { Price must be greater than 0 }
+          </span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="description" class="form-label">
+            Description <span class="required">*</span>
+          </label>
+          <textarea
+            id="description"
+            formControlName="description"
+            class="form-input form-textarea"
+            [class.error]="submitted && f['description'].invalid"
+            placeholder="Enter product description"
+            rows="4"
+          ></textarea>
+          @if (submitted && f['description'].invalid) {
+          <span class="error-message">
+            @if (f['description'].errors?.['required']) { Description is required } @else if
+            (f['description'].errors?.['minlength']) { Description must be at least 10 characters }
+          </span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="category" class="form-label">
+            Category <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            id="category"
+            formControlName="category"
+            class="form-input"
+            [class.error]="submitted && f['category'].invalid"
+            placeholder="e.g., electronics, clothing, etc."
+          />
+          @if (submitted && f['category'].invalid) {
+          <span class="error-message">
+            @if (f['category'].errors?.['required']) { Category is required } @else if
+            (f['category'].errors?.['minlength']) { Category must be at least 3 characters }
+          </span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="image" class="form-label"> Image URL <span class="required">*</span> </label>
+          <input
+            type="url"
+            id="image"
+            formControlName="image"
+            class="form-input"
+            [class.error]="submitted && f['image'].invalid"
+            placeholder="https://example.com/image.jpg"
+          />
+          @if (submitted && f['image'].invalid) {
+          <span class="error-message">
+            @if (f['image'].errors?.['required']) { Image URL is required } @else if
+            (f['image'].errors?.['pattern']) { Please enter a valid URL (http:// or https://) }
+          </span>
+          }
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="section-title">Rating Information</h2>
+
+        <div formGroupName="rating" class="form-row">
+          <div class="form-group">
+            <label for="rate" class="form-label"> Rating <span class="required">*</span> </label>
+            <input
+              type="number"
+              id="rate"
+              formControlName="rate"
+              class="form-input"
+              [class.error]="submitted && ratingControls['rate'].invalid"
+              placeholder="0.0"
+              step="0.1"
+              min="0"
+              max="5"
+            />
+            @if (submitted && ratingControls['rate'].invalid) {
+            <span class="error-message">
+              @if (ratingControls['rate'].errors?.['required']) { Rating is required } @else if
+              (ratingControls['rate'].errors?.['min'] || ratingControls['rate'].errors?.['max']) {
+              Rating must be between 0 and 5 }
+            </span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="count" class="form-label">
+              Review Count <span class="required">*</span>
+            </label>
+            <input
+              type="number"
+              id="count"
+              formControlName="count"
+              class="form-input"
+              [class.error]="submitted && ratingControls['count'].invalid"
+              placeholder="0"
+              min="0"
+            />
+            @if (submitted && ratingControls['count'].invalid) {
+            <span class="error-message">
+              @if (ratingControls['count'].errors?.['required']) { Review count is required } @if
+              (ratingControls['count'].errors?.['min']) { Review count must be 0 or greater }
+            </span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="submit-btn" [disabled]="isSubmitting">
+          @if (isSubmitting) {
+          <div class="spinner"></div>
+          Updating... } @else {
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M5 13L9 17L19 7"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Update Product }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+}

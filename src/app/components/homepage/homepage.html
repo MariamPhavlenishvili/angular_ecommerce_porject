@@ -1,0 +1,56 @@
+<div class="products-container">
+  <div class="products-header">
+    <h1 class="products-title">Our Products</h1>
+    <p class="products-subtitle">Discover amazing products at great prices</p>
+
+    <div class="search-section">
+      <div class="search-wrapper">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <input
+          [formControl]="searchControl"
+          type="text"
+          placeholder="Search for products..."
+          class="search-input"
+        />
+        @if (searchControl.value) {
+        <button
+          class="clear-search-btn"
+          (click)="searchControl.setValue('')"
+          aria-label="Clear search"
+        >
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M18 6L6 18M6 6L18 18"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        }
+      </div>
+      @if (errorMessage) {
+      <p class="error-message">{{ errorMessage }}</p>
+      } @if (searchControl.value && !errorMessage && products.length > 0) {
+      <p class="search-results-count">
+        Found {{ products.length }} {{ products.length === 1 ? 'product' : 'products' }}
+      </p>
+      }
+    </div>
+  </div>
+
+  <div class="products-grid">
+    @for (product of products; track product.id) {
+    <app-product-card [product]="product" />
+    }
+  </div>
+</div>

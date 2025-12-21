@@ -1,0 +1,25 @@
+<div class="product-card" (click)="navigateToProductDetails(product)">
+  <div class="product-image-wrapper">
+    <img [src]="product.image" [alt]="product.title" class="product-image" />
+    <div class="product-badge">{{ product.category }}</div>
+  </div>
+
+  <div class="product-content">
+    <h3 class="product-title">{{ product.title }}</h3>
+    <p class="product-description">{{ product.description }}</p>
+
+    <div class="product-rating">
+      <div class="stars">
+        @for (star of getStars(product.rating.rate); track $index) {
+        <span class="star" [class.filled]="star">★</span>
+        }
+      </div>
+      <span class="rating-text">{{ product.rating.rate }} ({{ product.rating.count }})</span>
+    </div>
+
+    <div class="product-footer">
+      <div class="product-price">${{ product.price.toFixed(2) }}</div>
+      <button class="add-to-cart-btn" (click)="addToBusket($event, product)">Add to Cart</button>
+    </div>
+  </div>
+</div>
